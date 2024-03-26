@@ -228,7 +228,7 @@ export default function Home() {
                     <Checkbox checked={task.complete} onChange={(e)=> handleCheck(task.id) }/>
                   </TableCell>
                   <TableCell className={task.complete ? 'text-muted-foreground' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.taskname}</TableCell>
-                  <TableCell>{format(parseISO(task.duedate), 'dd MMMM')}</TableCell>
+                  <TableCell>{format((task.duedate), 'dd MMMM')}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="me-4">
