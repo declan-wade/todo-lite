@@ -85,6 +85,8 @@ export default function Home() {
   }
 
   async function handleCheck(id: number) {
+    const index = tasks.findIndex((obj: any) => obj.id === id)
+    tasks[index].complete = !tasks[index].complete
     const response = await toggleTask(id);
     console.log(response);
     handleGetData();
