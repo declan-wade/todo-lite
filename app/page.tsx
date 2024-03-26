@@ -94,41 +94,8 @@ export default function Home() {
   }
 
   async function handleGetData() {
-    //const response: any = await getTasks();
-    setTasks([
-      {
-          "id": 7,
-          "taskname": "Todays task",
-          "complete": false,
-          "duedate": new Date()
-      },
-      {
-          "id": 6,
-          "taskname": "Mobile task",
-          "complete": false,
-          "duedate": new Date()
-      },
-      {
-          "id": 3,
-          "taskname": "New Task",
-          "complete": false
-      },
-      {
-          "id": 2,
-          "taskname": "My Task",
-          "complete": false
-      },
-      {
-          "id": 5,
-          "taskname": "Different task",
-          "complete": true
-      },
-      {
-          "id": 4,
-          "taskname": "New Task",
-          "complete": true
-      }
-  ]);
+    const response: any = await getTasks();
+    setTasks(response);
   }
 
   React.useEffect(() => {
