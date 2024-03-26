@@ -95,7 +95,7 @@ export default function Home() {
 
   async function handleGetData() {
     const response: any = await getTasks();
-    setTasks(response);
+    setTasks(response.rows);
   }
 
   React.useEffect(() => {
