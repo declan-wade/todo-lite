@@ -85,9 +85,6 @@ export default function Home() {
   }
 
   async function handleCheck(id: number) {
-    //const index = tasks.findIndex(obj => obj.id === id);
-    //tasks[index].complete = !tasks[index].complete;
-    //const payload = 
     const response = await toggleTask(id);
     console.log(response);
     handleGetData();
@@ -225,7 +222,7 @@ export default function Home() {
               tasks.map((task: any) => (
                 <TableRow key={task.id}>
                   <TableCell className="font-medium">
-                    <Checkbox checked={task.complete} onChange={(e)=> handleCheck(task.id) }/>
+                    <Checkbox checked={task.complete} onCheckedChange={()=> handleCheck(task.id) }/>
                   </TableCell>
                   <TableCell className={task.complete ? 'text-muted-foreground' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.taskname}</TableCell>
                   <TableCell>{format((task.duedate), 'dd MMMM')}</TableCell>
