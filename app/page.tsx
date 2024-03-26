@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Ellipsis } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Calendar } from "@/components/ui/calendar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +26,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils"
 import {
   Card,
   CardContent,
@@ -54,7 +56,9 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { putTask, getTasks, deleteTask } from "./db";
+import { Calendar as CalendarIcon } from "lucide-react"
+import { format, parseISO  } from "date-fns";
+import { putTask, toggleTask, getTasks, deleteTask } from "./db";
 import {
   saveObjectToCookie,
   getObjectFromCookie,
@@ -66,6 +70,7 @@ export default function Home() {
   const [taskName, setTaskName] = React.useState("");
   const [showPin, setShowPin] = React.useState<any>(false);
   const [pin, setPin] = React.useState<any>(0);
+  const [dueDate, setDueDate] = React.useState<Date | undefined>(new Date())
 
   async function handleDeleteData(id: number) {
     const response = await deleteTask(id);
@@ -74,14 +79,56 @@ export default function Home() {
   }
 
   async function handleAdd() {
-    const response = await putTask(taskName);
+    const response = await putTask(taskName, dueDate);
     console.log(response)
     if(response === "success"){handleGetData()}
   }
 
+  async function handleCheck(id: number) {
+    //const index = tasks.findIndex(obj => obj.id === id);
+    //tasks[index].complete = !tasks[index].complete;
+    //const payload = 
+    const response = await toggleTask(id);
+    console.log(response);
+    handleGetData();
+  }
+
   async function handleGetData() {
-    const response: any = await getTasks();
-    setTasks(response.rows);
+    //const response: any = await getTasks();
+    setTasks([
+      {
+          "id": 7,
+          "taskname": "Todays task",
+          "complete": false,
+          "duedate": new Date()
+      },
+      {
+          "id": 6,
+          "taskname": "Mobile task",
+          "complete": false,
+          "duedate": new Date()
+      },
+      {
+          "id": 3,
+          "taskname": "New Task",
+          "complete": false
+      },
+      {
+          "id": 2,
+          "taskname": "My Task",
+          "complete": false
+      },
+      {
+          "id": 5,
+          "taskname": "Different task",
+          "complete": true
+      },
+      {
+          "id": 4,
+          "taskname": "New Task",
+          "complete": true
+      }
+  ]);
   }
 
   React.useEffect(() => {
@@ -165,6 +212,28 @@ export default function Home() {
                 className="col-span-2 h-8"
                 onChange={(e)=>setTaskName(e.target.value)}
               />
+              <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-[280px] justify-start text-left font-normal",
+            !dueDate && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {dueDate ? format(dueDate, "PPP") : <span>Pick a date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={dueDate}
+          onSelect={setDueDate}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
             </div>
             <div className="grid grid-cols-1 items-center gap-4">
               <Button onClick={handleAdd}>Add</Button>
@@ -180,6 +249,7 @@ export default function Home() {
             <TableRow>
               <TableHead className="w-[100px]">Task</TableHead>
               <TableHead>Description</TableHead>
+              <TableHead>Due Date</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -188,9 +258,10 @@ export default function Home() {
               tasks.map((task: any) => (
                 <TableRow key={task.id}>
                   <TableCell className="font-medium">
-                    <Checkbox checked={task.complete}/>
+                    <Checkbox checked={task.complete} onChange={(e)=> handleCheck(task.id) }/>
                   </TableCell>
                   <TableCell className={task.complete ? 'text-muted-foreground' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.taskname}</TableCell>
+                  <TableCell>{format(parseISO(task.duedate), 'dd MMMM')}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="me-4">

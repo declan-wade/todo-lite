@@ -1,10 +1,10 @@
 "use server"
 import { sql } from '@vercel/postgres';
  
-export async function putTask(taskName: any) {
+export async function putTask(taskName: any, dueDate: any) {
   try {
     const result =
-      await sql`INSERT INTO tasks (taskname) VALUES (${taskName});`;
+      await sql`INSERT INTO tasks (taskname, duedate) VALUES (${taskName}, ${dueDate});`;
       console.log(result)
     return "success";
   } catch (error) {
@@ -29,6 +29,18 @@ export async function deleteTask(id: any) {
   try {
     const result =
       await sql`DELETE FROM tasks WHERE id = ${id};`;
+      console.log(result)
+      return "success";
+  } catch (error) {
+    console.log(error)
+    return  "error";
+  }
+}
+
+export async function toggleTask(id: any) {
+  try {
+    const result =
+      await sql`UPDATE tasks SET complete = NOT complete WHERE id = ${id};`;
       console.log(result)
       return "success";
   } catch (error) {
