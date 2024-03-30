@@ -69,7 +69,7 @@ export default function Home() {
   const [tasks, setTasks] = React.useState<any>([]);
   const [taskName, setTaskName] = React.useState("");
   const [showPin, setShowPin] = React.useState<any>(false);
-  const [pin, setPin] = React.useState<any>(0);
+  const [pin, setPin] = React.useState<any>(null);
   const [dueDate, setDueDate] = React.useState<Date | undefined>(new Date())
 
   async function handleDeleteData(id: number) {
@@ -226,8 +226,8 @@ export default function Home() {
                   <TableCell className="font-medium">
                     <Checkbox checked={task.complete} onCheckedChange={()=> handleCheck(task.id) }/>
                   </TableCell>
-                  <TableCell className={task.complete ? 'text-muted-foreground' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.taskname}</TableCell>
-                  <TableCell>{format((task.duedate), 'dd MMMM')}</TableCell>
+                  <TableCell className={task.complete ? 'text-muted-foreground line-through ' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.taskname}</TableCell>
+                  <TableCell classNamw={task.complete ? 'text-muted-foreground line-through ' : ''}>{format((task.duedate), 'dd MMMM')}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="me-4">
