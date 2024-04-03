@@ -226,7 +226,7 @@ export default function Home() {
                   <TableCell className="font-medium">
                     <Checkbox checked={task.complete} onCheckedChange={()=> handleCheck(task.id) }/>
                   </TableCell>
-                  <TableCell className={task.complete ? 'text-muted-foreground line-through ' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.taskname}</TableCell>
+                  <TableCell className={task.complete ? 'text-muted-foreground line-through ' : ''} style={{ textDecoration: task.complete ? 'line-through text-muted-foreground' : 'none' }}>{task.description}</TableCell>
                   <TableCell className={task.complete ? 'text-muted-foreground line-through ' : ''}>{format((task.duedate), 'dd MMMM')}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>

@@ -1,10 +1,10 @@
 "use server"
 import { sql } from '@vercel/postgres';
  
-export async function putTask(taskName: any, dueDate: any) {
+export async function putTask(description: any, dueDate: any) {
   try {
     const result =
-      await sql`INSERT INTO tasks (taskname, duedate) VALUES (${taskName}, ${dueDate});`;
+      await sql`INSERT INTO tasks (description, duedate, subject) VALUES (${description}, ${dueDate}, 'NA');`;
       console.log(result)
     return "success";
   } catch (error) {
